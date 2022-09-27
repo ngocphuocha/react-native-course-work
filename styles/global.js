@@ -27,9 +27,14 @@ export const GlobalStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  centerItem: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });
 
 export const DraculaTheme = {
   backgroundColor: "#282a36",
+  redColor: "#ff5555",
   pinkColor: "#ff79c6",
 };

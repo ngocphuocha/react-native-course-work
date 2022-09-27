@@ -2,7 +2,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreenStack from "../HomeScreenStack.js";
-import TripStackScreen from "../Trips/TripStackScreen.js";
+import TripsStackScreen from "../Trips/TripsStackScreen.js";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Tab = () => {
@@ -22,8 +22,8 @@ const Tab = () => {
           }}
         ></Tab.Screen>
         <Tab.Screen
-          name="Trips"
-          component={TripStackScreen}
+          name="TripsStackScreen"
+          component={TripsStackScreen}
           options={{
             title: "Trip",
             tabBarLabel: "Trip",
