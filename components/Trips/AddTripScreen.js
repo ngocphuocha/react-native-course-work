@@ -103,5 +103,4 @@ const AddTripScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({});
 export default AddTripScreen;

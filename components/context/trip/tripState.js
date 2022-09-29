@@ -20,7 +20,6 @@ const TripState = (props) => {
 
   const getTrips = async () => {
     const tripsArray = await AsyncStorage.getItem("trips");
-    console.log("Trip Array: ");
     dispatch({ type: GET_TRIPS, payload: JSON.parse(tripsArray) });
   };
 
@@ -69,7 +68,7 @@ const TripState = (props) => {
     }
   };
 
-  const deleteTrip = async () => {
+  const deleteAllTrip = async () => {
     try {
       await AsyncStorage.setItem("trips", JSON.stringify([]));
       // Dispatch delete all item in trips data
@@ -90,7 +89,7 @@ const TripState = (props) => {
         addTrip,
         updateTripItem,
         deleteTripItem,
-        deleteTrip,
+        deleteAllTrip,
       }}
     >
       {props.children}
