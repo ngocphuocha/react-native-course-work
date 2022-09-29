@@ -16,4 +16,4 @@ Reference: [Async Storage](https://react-native-async-storage.github.io/async-st
 6. [Delete All Trips](assets/introduce/delete-all-trips.png)
 
 ### Video demo
-![](assets/introduce/demonstation.mov)
+[![Watch the video](assets/introduce/home-screen.png)](https://youtu.be/-l0dtaK9YYU)
