@@ -7,7 +7,8 @@ Reference: [React Navigation](https://reactnavigation.org/)
 2. Using React Native Async Storage to store the office data.
 Reference: [Async Storage](https://react-native-async-storage.github.io/async-storage/docs/install)
 
-## Demonstration image and video are below:
+## Demonstration image and video are below
+
 1. [Home screen](assets/introduce/home-screen.png)
 2. [Trip Screen](assets/introduce/trips-screen.png)
 3. [Add Trip Screen](assets/introduce/add-trip-screen.png)
@@ -16,4 +17,5 @@ Reference: [Async Storage](https://react-native-async-storage.github.io/async-st
 6. [Delete All Trips](assets/introduce/delete-all-trips.png)
 
 ### Video demo
+
 [![Watch the video](assets/introduce/home-screen.png)](https://youtu.be/-l0dtaK9YYU)
