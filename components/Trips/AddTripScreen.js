@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "react-native-get-random-values";
 import { v4 as randomId } from "uuid";
 import {
@@ -15,6 +15,8 @@ import { RadioButton } from "react-native-paper";
 import FlatButton from "../Buttons/FlatButton";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import TripContext from "../context/trip/tripContext.js";
+
 const AddTripScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [checked, setChecked] = useState("Yes");
@@ -22,7 +24,10 @@ const AddTripScreen = ({ navigation }) => {
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
 
-  const addTrip = async () => {
+  const tripContext = useContext(TripContext);
+  const { addTrip } = tripContext;
+
+  const addNewTrip = async () => {
     try {
       // retrieve the trip input
       const trip = {
@@ -33,18 +38,9 @@ const AddTripScreen = ({ navigation }) => {
         require: checked,
         description,
       };
-
-      const trips = JSON.parse(await AsyncStorage.getItem("trips"));
-
-      if (trips == null) {
-        await AsyncStorage.setItem("trips", JSON.stringify([]));
-      }
-
-      const newTrips = [...trips, trip];
-      console.log("OKKKK");
-      // await AsyncStorage.removeItem("trips");
-      await AsyncStorage.setItem("trips", JSON.stringify(newTrips));
-      await navigation.navigate("Trips");
+      await addTrip(trip);
+      // Navigate back to list all trips screen
+      await navigation.navigate("TripsScreen");
     } catch (error) {
       console.log(error);
     }
@@ -101,7 +97,7 @@ const AddTripScreen = ({ navigation }) => {
         />
 
         {/*  Submit button*/}
-        <FlatButton title="Add" onPress={addTrip} />
+        <FlatButton title="Add" onPress={addNewTrip} />
       </View>
     </TouchableWithoutFeedback>
   );

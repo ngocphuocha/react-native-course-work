@@ -1,6 +1,5 @@
 import React from "react";
-import { Text, View } from "react-native";
-import { DraculaTheme, GlobalStyles } from "../styles/global.js";
+import { DraculaTheme } from "../styles/global.js";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./Home";
 

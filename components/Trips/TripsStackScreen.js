@@ -6,6 +6,7 @@ import { DraculaTheme } from "../../styles/global";
 import DeleteAllTrip from "./DeleteAllTrip.js";
 import { Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import UpdateTripScreen from "./UpdateTripScreen.js";
 
 const TripStackScreen = () => {
   const TripStack = createNativeStackNavigator();
@@ -24,6 +25,7 @@ const TripStackScreen = () => {
       console.log(error);
     }
   };
+
   return (
     <TripStack.Navigator
       screenOptions={{
@@ -37,16 +39,22 @@ const TripStackScreen = () => {
       }}
     >
       <TripStack.Screen
-        name="Trips"
+        name="TripsScreen"
         component={TripsScreen}
         options={{
           headerRight: () => <DeleteAllTrip removeAllTrip={removeAllTrip} />,
         }}
       />
       <TripStack.Screen
-        name="AddTrips"
+        name="AddTripsScreen"
         component={AddTripScreen}
         options={{ title: "Add New Trip" }}
+      />
+
+      <TripStack.Screen
+        name="UpdateTripScreen"
+        component={UpdateTripScreen}
+        options={({ route }) => ({ title: route.params.item.name })}
       />
     </TripStack.Navigator>
   );
