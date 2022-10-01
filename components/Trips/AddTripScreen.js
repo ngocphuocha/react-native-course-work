@@ -1,21 +1,19 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import "react-native-get-random-values";
 import { v4 as randomId } from "uuid";
 import {
   Keyboard,
-  StyleSheet,
   Text,
   TextInput,
   TouchableWithoutFeedback,
   View,
+  Alert,
 } from "react-native";
-import { DraculaTheme } from "../../styles/global.js";
-import { GlobalStyles } from "../../styles/global.js";
+import { DraculaTheme, GlobalStyles } from "../../styles/global.js";
 import { RadioButton } from "react-native-paper";
 import FlatButton from "../Buttons/FlatButton";
-import { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import TripContext from "../context/trip/tripContext.js";
+import { useFocusEffect } from "@react-navigation/native";
 
 const AddTripScreen = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -23,11 +21,36 @@ const AddTripScreen = ({ navigation }) => {
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
+  const [error, setError] = useState({
+    name: "Required",
+    destination: "Required",
+    date: "Required",
+    description: "Required",
+  });
+  const [isValid, setIsValid] = useState(false);
 
   const tripContext = useContext(TripContext);
   const { addTrip } = tripContext;
 
+  useFocusEffect(
+    useCallback(() => {
+      checkValidForm();
+    }, [])
+  );
   const addNewTrip = async () => {
+    checkValidForm();
+
+    if (isValid === false) {
+      Alert.alert("Invalid input", "You need to fill all required fields!", [
+        {
+          text: "Understood",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel",
+        },
+      ]);
+      return;
+    }
+
     try {
       // retrieve the trip input
       const trip = {
@@ -46,29 +69,128 @@ const AddTripScreen = ({ navigation }) => {
     }
   };
 
+  const checkValidForm = () => {
+    // Default state
+    setIsValid(true);
+
+    if (error.name.trim() !== "") {
+      setIsValid(false);
+    }
+    if (error.destination.trim() !== "") {
+      setIsValid(false);
+    }
+    if (error.date.trim() !== "") {
+      setIsValid(false);
+    }
+    if (error.description.trim() !== "") {
+      setIsValid(false);
+    }
+
+    // console.log(isValid);
+  };
+
+  const onChangeName = (value) => {
+    setName(value);
+    const newError = { ...error };
+
+    if (value.trim().length === 0) {
+      newError.name = "Required";
+    } else {
+      newError.name = "";
+    }
+
+    setError(newError);
+    checkValidForm();
+  };
+
+  const onChangeDestination = (value) => {
+    setDestination(value.trim());
+    const newError = { ...error };
+
+    if (value.trim().length === 0) {
+      newError.destination = "Required";
+    } else {
+      newError.destination = "";
+    }
+
+    setError(newError);
+    checkValidForm();
+  };
+
+  const onChangeDate = (value) => {
+    setDate(value);
+    const newError = { ...error };
+    // Reference https://www.programiz.com/javascript/regex
+    var regex = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
+    const result = regex.test(value);
+    // console.log("Result: ", result);
+    if (value.trim().length === 0) {
+      newError.date = "Required";
+    } else if (result === false) {
+      newError.date = "Date must be format DD/MM/YYYY";
+    } else {
+      newError.date = "";
+    }
+
+    setError(newError);
+    checkValidForm();
+  };
+
+  const onChangeDescription = (value) => {
+    setDescription(value);
+    const newError = { ...error };
+
+    if (value.trim().length === 0) {
+      newError.description = "Required";
+    } else {
+      newError.description = "";
+    }
+    setError(newError);
+    checkValidForm();
+  };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={GlobalStyles.container}>
-        <Text>{checked}</Text>
         <TextInput
           style={GlobalStyles.inputText}
           value={name}
-          onChangeText={setName}
+          onChangeText={(value) => onChangeName(value)}
           placeholder="Name of Trip"
         />
+        {error.name.length !== 0 && (
+          <Text style={{ color: DraculaTheme.redColor }}>{error.name}</Text>
+        )}
+
+        <Text></Text>
         <TextInput
           style={GlobalStyles.inputText}
           value={destination}
-          onChangeText={setDestination}
+          onChangeText={onChangeDestination}
           placeholder="Destination"
         />
+        {error.destination != undefined && (
+          <Text style={{ color: DraculaTheme.redColor }}>
+            {error.destination}
+          </Text>
+        )}
+
         <TextInput
-          onChangeText={setDate}
+          onChangeText={onChangeDate}
           value={date}
           style={GlobalStyles.inputText}
-          placeholder="Date of trip"
+          placeholder="Date of trip (DD/MM/YYYY)"
         />
-        <Text style={{ padding: 10, color: DraculaTheme.pinkColor }}>
+        {error.date != undefined && (
+          <Text style={{ color: DraculaTheme.redColor }}>{error.date}</Text>
+        )}
+
+        <Text
+          style={{
+            color: DraculaTheme.pinkColor,
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
+        >
           Require Assessment
         </Text>
         <View style={GlobalStyles.radioContainer}>
@@ -89,15 +211,23 @@ const AddTripScreen = ({ navigation }) => {
             />
           </View>
         </View>
+
         <TextInput
           value={description}
-          onChangeText={setDescription}
+          onChangeText={onChangeDescription}
           style={GlobalStyles.inputText}
           placeholder="Description"
         />
+        {error.description != undefined && (
+          <Text style={{ color: DraculaTheme.redColor }}>
+            {error.description}
+          </Text>
+        )}
 
         {/*  Submit button*/}
-        <FlatButton title="Add" onPress={addNewTrip} />
+        <View style={{ marginVertical: 10 }}>
+          <FlatButton title="Add" onPress={addNewTrip} />
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );

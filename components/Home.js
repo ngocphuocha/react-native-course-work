@@ -17,9 +17,10 @@ const Home = () => {
       } catch (error) {
         console.log(error);
       }
-    } else {
-      console.log("Trip is exists in Async Storage");
     }
+    //  else {
+    //   console.log("Trip is exists in Async Storage");
+    // }
   };
   return (
     <View style={[GlobalStyles.container, GlobalStyles.centerItem]}>

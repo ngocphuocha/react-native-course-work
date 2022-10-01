@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { DraculaTheme } from "../../styles/global.js";
 const TripItem = ({ item }) => {
   const navigation = useNavigation();
 
@@ -13,10 +13,19 @@ const TripItem = ({ item }) => {
   return (
     <TouchableOpacity onPress={goToUpdateScreen}>
       <View style={styles.itemContainer}>
-        <Text style={styles.itemText}>{item.name}</Text>
-        {/*<Text style={styles.itemText}>Name {item.name}</Text>*/}
-        <MaterialIcons name="delete" size={18} />
-        {/*<Text style={styles.itemText}>Name {item.destination}</Text>*/}
+        <View style={styles.childItemContainer}>
+          <Text style={styles.itemText}>{item.name}</Text>
+          <Text style={[styles.itemText, styles.destinationText]}>
+            {item.destination}
+          </Text>
+        </View>
+
+        <View style={styles.childItemContainer}>
+          <Text style={styles.itemText}>{item.date}</Text>
+          <Text style={styles.itemText}>
+            Require Assessment: {item.require}
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -33,10 +42,20 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-between",
+    minHeight: 75,
+  },
+  childItemContainer: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignContent: "space-between",
   },
   itemText: {
     fontSize: 15,
     fontWeight: "bold",
+  },
+
+  destinationText: {
+    color: DraculaTheme.redColor,
   },
 });
 export default TripItem;
