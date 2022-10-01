@@ -15,6 +15,7 @@ import FlatButton from "../Buttons/FlatButton";
 import { useFocusEffect } from "@react-navigation/native";
 import TripContext from "../context/trip/tripContext.js";
 import DeleteTripButtonHeader from "./DeleteTripButtonHeader.js";
+
 const UpdateTripScreen = ({ navigation, route }) => {
   const { item } = route.params;
   const [name, setName] = useState(item.name);
@@ -26,7 +27,7 @@ const UpdateTripScreen = ({ navigation, route }) => {
 
   useFocusEffect(
     React.useCallback(() => {
-      // Set button delete trip to header
+      // Set button delete trip to header bar
       navigation.setOptions({
         headerRight: () => (
           <DeleteTripButtonHeader removeTrip={confirmDeleteTrip} />
@@ -71,11 +72,15 @@ const UpdateTripScreen = ({ navigation, route }) => {
   };
 
   const checkValidForm = () => {
-    // default state error
+    // Dismiss the keyboard first
+    Keyboard.dismiss();
+
+    // set default state error
     setErrorInput({});
+    // set flag valid
     let valid = true;
 
-    if (name.trim().length == 0) {
+    if (name.trim().length === 0) {
       setErrorInput((preState) => ({
         ...preState,
         name: "Required",
@@ -87,7 +92,7 @@ const UpdateTripScreen = ({ navigation, route }) => {
         // create copy of state object
         const cloneObj = { ...preState };
         // remove salary key from object
-        delete cloneObj["name"];
+        delete cloneObj.name;
 
         return cloneObj;
       });
@@ -105,14 +110,15 @@ const UpdateTripScreen = ({ navigation, route }) => {
         // create copy of state object
         const cloneObj = { ...preState };
         // remove salary key from object
-        delete cloneObj["destination"];
+        delete cloneObj.destination;
 
         return cloneObj;
       });
     }
 
     // Reference https://www.programiz.com/javascript/regex
-    var regex = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
+    const regex =
+      /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
     const result = regex.test(date);
 
     if (date.trim().length === 0) {
@@ -134,7 +140,7 @@ const UpdateTripScreen = ({ navigation, route }) => {
         // create copy of state object
         const cloneObj = { ...preState };
         // remove salary key from object
-        delete cloneObj["date"];
+        delete cloneObj.date;
 
         return cloneObj;
       });
@@ -152,21 +158,21 @@ const UpdateTripScreen = ({ navigation, route }) => {
         // create copy of state object
         const cloneObj = { ...preState };
         // remove salary key from object
-        delete cloneObj["description"];
+        delete cloneObj.description;
 
         return cloneObj;
       });
     }
 
-    if (valid) {
-      updateTrip();
-    } else {
+    if (!valid) {
       Alert.alert("Invalid input", "You need to fill all required fields!", [
         {
           text: "Understood",
           style: "cancel",
         },
       ]);
+    } else {
+      updateTrip();
     }
   };
 
@@ -186,12 +192,17 @@ const UpdateTripScreen = ({ navigation, route }) => {
     setDescription(value);
   };
 
+  const handleRemoveError = (value, key) => {
+    console.log(key);
+    setErrorInput((presState) => ({ ...presState, [key]: undefined }));
+  };
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <View style={GlobalStyles.container}>
         <View style={styles.titleContainer}>
           <Text style={{ color: DraculaTheme.pinkColor }}>Update Trip</Text>
-          {/* <Text>{JSON.stringify(errorInput, null, 4)}</Text> */}
+          {/*<Text>{JSON.stringify(errorInput, null, 4)}</Text>*/}
         </View>
 
         <TextInput
@@ -199,6 +210,9 @@ const UpdateTripScreen = ({ navigation, route }) => {
           value={name}
           onChangeText={onChangeName}
           placeholder="Name of Trip"
+          onFocus={(value) => {
+            handleRemoveError(value, "name");
+          }}
         />
         {errorInput.name && (
           <Text style={{ color: DraculaTheme.redColor }}>
@@ -210,6 +224,9 @@ const UpdateTripScreen = ({ navigation, route }) => {
           style={GlobalStyles.inputText}
           value={destination}
           onChangeText={onChangeDestination}
+          onFocus={(value) => {
+            handleRemoveError(value, "destination");
+          }}
           placeholder="Destination"
         />
         {errorInput.destination && (
@@ -221,6 +238,9 @@ const UpdateTripScreen = ({ navigation, route }) => {
         <TextInput
           onChangeText={onChangeDate}
           value={date}
+          onFocus={(value) => {
+            handleRemoveError(value, "date");
+          }}
           style={GlobalStyles.inputText}
           placeholder="Date of trip (DD/MM/YYYY)"
         />
@@ -261,6 +281,9 @@ const UpdateTripScreen = ({ navigation, route }) => {
         <TextInput
           value={description}
           onChangeText={onChangeDescription}
+          onFocus={(value) => {
+            handleRemoveError(value, "description");
+          }}
           style={GlobalStyles.inputText}
           placeholder="Description"
         />

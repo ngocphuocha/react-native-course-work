@@ -13,7 +13,6 @@ import { DraculaTheme, GlobalStyles } from "../../styles/global.js";
 import { RadioButton } from "react-native-paper";
 import FlatButton from "../Buttons/FlatButton";
 import TripContext from "../context/trip/tripContext.js";
-import { useFocusEffect } from "@react-navigation/native";
 
 const AddTripScreen = ({ navigation }) => {
   const [name, setName] = useState("");
@@ -21,36 +20,12 @@ const AddTripScreen = ({ navigation }) => {
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
-  const [error, setError] = useState({
-    name: "Required",
-    destination: "Required",
-    date: "Required",
-    description: "Required",
-  });
-  const [isValid, setIsValid] = useState(false);
+  const [errorInput, setErrorInput] = useState({});
 
   const tripContext = useContext(TripContext);
   const { addTrip } = tripContext;
 
-  useFocusEffect(
-    useCallback(() => {
-      checkValidForm();
-    }, [])
-  );
   const addNewTrip = async () => {
-    checkValidForm();
-
-    if (isValid === false) {
-      Alert.alert("Invalid input", "You need to fill all required fields!", [
-        {
-          text: "Understood",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel",
-        },
-      ]);
-      return;
-    }
-
     try {
       // retrieve the trip input
       const trip = {
@@ -61,6 +36,7 @@ const AddTripScreen = ({ navigation }) => {
         require: checked,
         description,
       };
+
       await addTrip(trip);
       // Navigate back to list all trips screen
       await navigation.navigate("TripsScreen");
@@ -69,84 +45,130 @@ const AddTripScreen = ({ navigation }) => {
     }
   };
 
-  const checkValidForm = () => {
-    // Default state
-    setIsValid(true);
-
-    if (error.name.trim() !== "") {
-      setIsValid(false);
-    }
-    if (error.destination.trim() !== "") {
-      setIsValid(false);
-    }
-    if (error.date.trim() !== "") {
-      setIsValid(false);
-    }
-    if (error.description.trim() !== "") {
-      setIsValid(false);
-    }
-
-    // console.log(isValid);
-  };
-
   const onChangeName = (value) => {
     setName(value);
-    const newError = { ...error };
-
-    if (value.trim().length === 0) {
-      newError.name = "Required";
-    } else {
-      newError.name = "";
-    }
-
-    setError(newError);
-    checkValidForm();
   };
 
   const onChangeDestination = (value) => {
-    setDestination(value.trim());
-    const newError = { ...error };
-
-    if (value.trim().length === 0) {
-      newError.destination = "Required";
-    } else {
-      newError.destination = "";
-    }
-
-    setError(newError);
-    checkValidForm();
+    setDestination(value);
   };
 
   const onChangeDate = (value) => {
     setDate(value);
-    const newError = { ...error };
-    // Reference https://www.programiz.com/javascript/regex
-    var regex = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
-    const result = regex.test(value);
-    // console.log("Result: ", result);
-    if (value.trim().length === 0) {
-      newError.date = "Required";
-    } else if (result === false) {
-      newError.date = "Date must be format DD/MM/YYYY";
-    } else {
-      newError.date = "";
-    }
-
-    setError(newError);
-    checkValidForm();
   };
 
   const onChangeDescription = (value) => {
     setDescription(value);
-    const newError = { ...error };
+  };
 
-    if (value.trim().length === 0) {
-      newError.description = "Required";
+  const checkValidForm = () => {
+    // Dismiss the keyboard first
+    Keyboard.dismiss();
+
+    // set default state error
+    setErrorInput({});
+    // set flag valid
+    let valid = true;
+
+    if (name.trim().length === 0) {
+      setErrorInput((preState) => ({
+        ...preState,
+        name: "Required",
+      }));
+
+      valid = false;
     } else {
-      newError.description = "";
+      setErrorInput((preState) => {
+        // create copy of state object
+        const cloneObj = { ...preState };
+        // remove salary key from object
+        delete cloneObj.name;
+
+        return cloneObj;
+      });
     }
-    setError(newError);
-    checkValidForm();
+
+    if (destination.trim().length === 0) {
+      setErrorInput((preState) => ({
+        ...preState,
+        destination: "Required",
+      }));
+
+      valid = false;
+    } else {
+      setErrorInput((preState) => {
+        // create copy of state object
+        const cloneObj = { ...preState };
+        // remove salary key from object
+        delete cloneObj.destination;
+
+        return cloneObj;
+      });
+    }
+
+    // Reference https://www.programiz.com/javascript/regex
+    const regex =
+      /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i;
+    const result = regex.test(date);
+
+    if (date.trim().length === 0) {
+      setErrorInput((preState) => ({
+        ...preState,
+        date: "Required",
+      }));
+
+      valid = false;
+    } else if (result === false) {
+      setErrorInput((preState) => ({
+        ...preState,
+        date: "Date must be format DD/MM/YYYY",
+      }));
+
+      valid = false;
+    } else {
+      setErrorInput((preState) => {
+        // create copy of state object
+        const cloneObj = { ...preState };
+        // remove salary key from object
+        delete cloneObj.date;
+
+        return cloneObj;
+      });
+    }
+
+    if (description.trim().length === 0) {
+      setErrorInput((preState) => ({
+        ...preState,
+        description: "Required",
+      }));
+
+      valid = false;
+    } else {
+      setErrorInput((preState) => {
+        // create copy of state object
+        const cloneObj = { ...preState };
+        // remove salary key from object
+        delete cloneObj.description;
+
+        return cloneObj;
+      });
+    }
+
+    if (!valid) {
+      Alert.alert("Invalid input", "You need to fill all required fields!", [
+        {
+          text: "Understood",
+          style: "cancel",
+        },
+      ]);
+    } else {
+      addNewTrip();
+    }
+  };
+
+  const handleRemoveError = (value, key) => {
+    console.log(key);
+    setErrorInput((presState) => ({ ...presState, [key]: undefined }));
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -154,34 +176,46 @@ const AddTripScreen = ({ navigation }) => {
         <TextInput
           style={GlobalStyles.inputText}
           value={name}
-          onChangeText={(value) => onChangeName(value)}
+          onChangeText={onChangeName}
           placeholder="Name of Trip"
+          onFocus={(value) => {
+            handleRemoveError(value, "name");
+          }}
         />
-        {error.name.length !== 0 && (
-          <Text style={{ color: DraculaTheme.redColor }}>{error.name}</Text>
+        {errorInput.name && (
+          <Text style={{ color: DraculaTheme.redColor }}>
+            {errorInput.name}
+          </Text>
         )}
 
-        <Text></Text>
         <TextInput
           style={GlobalStyles.inputText}
           value={destination}
           onChangeText={onChangeDestination}
+          onFocus={(value) => {
+            handleRemoveError(value, "destination");
+          }}
           placeholder="Destination"
         />
-        {error.destination != undefined && (
+        {errorInput.destination && (
           <Text style={{ color: DraculaTheme.redColor }}>
-            {error.destination}
+            {errorInput.destination}
           </Text>
         )}
 
         <TextInput
           onChangeText={onChangeDate}
           value={date}
+          onFocus={(value) => {
+            handleRemoveError(value, "date");
+          }}
           style={GlobalStyles.inputText}
           placeholder="Date of trip (DD/MM/YYYY)"
         />
-        {error.date != undefined && (
-          <Text style={{ color: DraculaTheme.redColor }}>{error.date}</Text>
+        {errorInput.date && (
+          <Text style={{ color: DraculaTheme.redColor }}>
+            {errorInput.date}
+          </Text>
         )}
 
         <Text
@@ -215,18 +249,21 @@ const AddTripScreen = ({ navigation }) => {
         <TextInput
           value={description}
           onChangeText={onChangeDescription}
+          onFocus={(value) => {
+            handleRemoveError(value, "description");
+          }}
           style={GlobalStyles.inputText}
           placeholder="Description"
         />
-        {error.description != undefined && (
+        {errorInput.description && (
           <Text style={{ color: DraculaTheme.redColor }}>
-            {error.description}
+            {errorInput.description}
           </Text>
         )}
 
         {/*  Submit button*/}
         <View style={{ marginVertical: 10 }}>
-          <FlatButton title="Add" onPress={addNewTrip} />
+          <FlatButton title="Add" onPress={checkValidForm} />
         </View>
       </View>
     </TouchableWithoutFeedback>
