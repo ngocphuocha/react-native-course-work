@@ -1,30 +1,41 @@
-import React, { useContext, useCallback, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import React, { useContext, useCallback } from "react";
+import { FlatList, StyleSheet, View, Alert } from "react-native";
 import { GlobalStyles } from "../../styles/global.js";
 import FlatButton from "../Buttons/FlatButton";
 import TripItem from "./TripItem.js";
 import TripContext from "../context/trip/tripContext.js";
 import { useFocusEffect } from "@react-navigation/native";
 import SearchTripForm from "./SearchTripForm.js";
+import DeleteAllTrip from "./DeleteAllTrip.js";
 const TripsScreen = ({ navigation }) => {
   const tripContext = useContext(TripContext);
-  const { tripsData, getTrips, searchTripItem } = tripContext;
-  const [trips, setTrips] = useState([]);
+  const { tripsData, getTrips, searchTripItem, deleteAllTrip } = tripContext;
 
   useFocusEffect(
     useCallback(() => {
-      getTrips(); // get trips data from context
-      setTrips(tripsData);
-      console.log(trips);
+      getTrips();
     }, [])
   );
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => <DeleteAllTrip removeAllTrip={removeAllTrip} />,
+    });
+  }, [navigation]);
 
   // Render the trip
   const renderTrip = ({ item }) => <TripItem item={item} />;
 
-  const searchTrips = (query) => {
-    const result = searchTripItem(query);
-    setTrips(result);
+  // Remove all trips from async storage
+  const removeAllTrip = () => {
+    Alert.alert("Delete All Trip", "Are you sure delete all the trips?", [
+      {
+        text: "Cancel",
+        onPress: () => console.log("Cancel delete all trip"),
+        style: "cancel",
+      },
+      { text: "OK", onPress: deleteAllTrip },
+    ]);
   };
   return (
     <View style={GlobalStyles.container}>
@@ -33,13 +44,13 @@ const TripsScreen = ({ navigation }) => {
         onPress={() => navigation.navigate("AddTripsScreen")}
       />
       {/* Search trip form */}
-      <SearchTripForm searchTrips={searchTrips} />
+      <SearchTripForm searchTrips={searchTripItem} />
 
       <View style={styles.content}>
         {/* List of trip */}
         <View style={styles.list}>
           <FlatList
-            data={trips}
+            data={tripsData}
             renderItem={renderTrip}
             keyExtractor={(item) => item.id}
           />

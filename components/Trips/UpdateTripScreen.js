@@ -33,7 +33,7 @@ const UpdateTripScreen = ({ navigation, route }) => {
           <DeleteTripButtonHeader removeTrip={confirmDeleteTrip} />
         ),
       });
-    }, [])
+    }, [navigation])
   );
 
   const tripContext = useContext(TripContext);
@@ -42,14 +42,17 @@ const UpdateTripScreen = ({ navigation, route }) => {
   const updateTrip = async () => {
     try {
       const tripItemInput = {
-        id: randomId(),
+        id: item.id,
         name: name.trim().toLowerCase(),
         destination: destination.trim().toLowerCase(),
         date: date.trim().toLowerCase(),
         require: checked.trim().toLowerCase(),
         description: destination.trim().toLowerCase(),
       };
+      console.log("Update trip input", tripItemInput);
+      // return;
       await updateTripItem(tripItemInput);
+      // console.log("OK");
       navigation.navigate("TripsScreen");
     } catch (error) {
       console.log(error);

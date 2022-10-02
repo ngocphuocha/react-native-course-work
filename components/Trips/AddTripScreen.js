@@ -36,10 +36,12 @@ const AddTripScreen = ({ navigation }) => {
         require: checked.trim().toLowerCase(),
         description: destination.trim().toLowerCase(),
       };
+      // console.log(tripItemInput);
+      // return;
 
       await addTrip(tripItemInput);
       // Navigate back to list all trips screen
-      // await navigation.navigate("TripsScreen");
+      await navigation.navigate("TripsScreen");
     } catch (error) {
       console.log(error);
     }
