@@ -12,7 +12,7 @@ const FlatButton = ({ title, onPress }) => {
 };
 const styles = StyleSheet.create({
   button: {
-    borderRadius: 8,
+    borderRadius: 5,
     paddingVertical: 14,
     paddingHorizontal: 10,
     backgroundColor: DraculaTheme.backgroundColor,

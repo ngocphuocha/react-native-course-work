@@ -28,18 +28,18 @@ const AddTripScreen = ({ navigation }) => {
   const addNewTrip = async () => {
     try {
       // retrieve the trip input
-      const trip = {
+      const tripItemInput = {
         id: randomId(),
-        name,
-        destination,
-        date,
-        require: checked,
-        description,
+        name: name.trim().toLowerCase(),
+        destination: destination.trim().toLowerCase(),
+        date: date.trim().toLowerCase(),
+        require: checked.trim().toLowerCase(),
+        description: destination.trim().toLowerCase(),
       };
 
-      await addTrip(trip);
+      await addTrip(tripItemInput);
       // Navigate back to list all trips screen
-      await navigation.navigate("TripsScreen");
+      // await navigation.navigate("TripsScreen");
     } catch (error) {
       console.log(error);
     }

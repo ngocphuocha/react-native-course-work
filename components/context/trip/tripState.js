@@ -23,6 +23,12 @@ const TripState = (props) => {
     dispatch({ type: GET_TRIPS, payload: JSON.parse(tripsArray) });
   };
 
+  const searchTripItem = (query) => {
+    return state.tripsData.filter(
+      (item) => item.name.toLowerCase().indexOf(query) > -1
+    );
+  };
+
   const addTrip = async (newTrip) => {
     try {
       const trips = JSON.parse(await AsyncStorage.getItem("trips"));
@@ -40,6 +46,7 @@ const TripState = (props) => {
     }
   };
 
+  // Reference https://stackoverflow.com/questions/5324798/how-to-search-an-array-in-jquery-like-sql-like-value-statement
   const updateTripItem = async (updateTripItem) => {
     try {
       const foundItem = state.tripsData.find((e) => e.id == updateTripItem.id);
@@ -86,6 +93,7 @@ const TripState = (props) => {
         tripsData: state.tripsData,
         trip: state.trip,
         getTrips,
+        searchTripItem,
         addTrip,
         updateTripItem,
         deleteTripItem,

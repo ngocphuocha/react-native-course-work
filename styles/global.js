@@ -7,7 +7,7 @@ export const GlobalStyles = StyleSheet.create({
   },
 
   inputText: {
-    borderRadius: 8,
+    borderRadius: 5,
     marginVertical: 12,
     height: 40,
     borderWidth: 1,

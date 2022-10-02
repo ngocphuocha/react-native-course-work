@@ -42,12 +42,12 @@ const UpdateTripScreen = ({ navigation, route }) => {
   const updateTrip = async () => {
     try {
       const tripItemInput = {
-        id: item.id,
-        name,
-        destination,
-        date,
-        require: checked,
-        description,
+        id: randomId(),
+        name: name.trim().toLowerCase(),
+        destination: destination.trim().toLowerCase(),
+        date: date.trim().toLowerCase(),
+        require: checked.trim().toLowerCase(),
+        description: destination.trim().toLowerCase(),
       };
       await updateTripItem(tripItemInput);
       navigation.navigate("TripsScreen");
