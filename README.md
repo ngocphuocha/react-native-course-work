@@ -18,4 +18,4 @@ Reference: [Async Storage](https://react-native-async-storage.github.io/async-st
 
 ### Video demo
 
-[![Watch the video](assets/introduce/home-screen.png)](https://youtu.be/-l0dtaK9YYU)
+[![Watch the video](assets/introduce/home-screen.png)](https://youtu.be/z9h3ziHsi1k)
