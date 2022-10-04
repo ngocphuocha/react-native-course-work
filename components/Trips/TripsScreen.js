@@ -31,7 +31,6 @@ const TripsScreen = ({ navigation }) => {
     Alert.alert("Delete All Trip", "Are you sure delete all the trips?", [
       {
         text: "Cancel",
-        onPress: () => console.log("Cancel delete all trip"),
         style: "cancel",
       },
       { text: "OK", onPress: deleteAllTrip },
@@ -50,6 +49,8 @@ const TripsScreen = ({ navigation }) => {
         {/* List of trip */}
         <View style={styles.list}>
           <FlatList
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
             data={tripsData}
             renderItem={renderTrip}
             keyExtractor={(item) => item.id}

@@ -34,7 +34,8 @@ const TripItem = ({ item }) => {
 const styles = StyleSheet.create({
   itemContainer: {
     // backgroundColor: "#ff79c6",
-    borderStyle: "dashed",
+    borderStyle: "solid",
+    backgroundColor: "#fff",
     borderRadius: 8,
     borderColor: "#ff79c6",
     borderWidth: 1,
