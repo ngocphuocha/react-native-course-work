@@ -16,7 +16,7 @@ import TripContext from "../context/trip/tripContext.js";
 
 const AddTripScreen = ({ navigation }) => {
   const [name, setName] = useState("");
-  const [checked, setChecked] = useState("Yes");
+  const [checked, setChecked] = useState("yes");
   const [destination, setDestination] = useState("");
   const [date, setDate] = useState("");
   const [description, setDescription] = useState("");
@@ -234,7 +234,7 @@ const AddTripScreen = ({ navigation }) => {
             <Text>Yes</Text>
             <RadioButton
               value="Yes"
-              status={checked === "Yes" ? "checked" : "unchecked"}
+              status={checked === "yes" ? "checked" : "unchecked"}
               onPress={() => setChecked("Yes")}
             />
           </View>
@@ -242,7 +242,7 @@ const AddTripScreen = ({ navigation }) => {
             <Text>No</Text>
             <RadioButton
               value="No"
-              status={checked === "No" ? "checked" : "unchecked"}
+              status={checked === "no" ? "checked" : "unchecked"}
               onPress={() => setChecked("No")}
             />
           </View>

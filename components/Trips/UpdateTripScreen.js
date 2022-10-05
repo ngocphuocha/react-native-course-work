@@ -267,7 +267,7 @@ const UpdateTripScreen = ({ navigation, route }) => {
             <Text>Yes</Text>
             <RadioButton
               value="Yes"
-              status={checked === "Yes" ? "checked" : "unchecked"}
+              status={checked === "yes" ? "checked" : "unchecked"}
               onPress={() => setChecked("Yes")}
             />
           </View>
@@ -275,7 +275,7 @@ const UpdateTripScreen = ({ navigation, route }) => {
             <Text>No</Text>
             <RadioButton
               value="No"
-              status={checked === "No" ? "checked" : "unchecked"}
+              status={checked === "no" ? "checked" : "unchecked"}
               onPress={() => setChecked("No")}
             />
           </View>
