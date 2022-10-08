@@ -233,17 +233,17 @@ const AddTripScreen = ({ navigation }) => {
           <View style={GlobalStyles.radioButton}>
             <Text>Yes</Text>
             <RadioButton
-              value="Yes"
+              value="yes"
               status={checked === "yes" ? "checked" : "unchecked"}
-              onPress={() => setChecked("Yes")}
+              onPress={() => setChecked("yes")}
             />
           </View>
           <View style={GlobalStyles.radioButton}>
             <Text>No</Text>
             <RadioButton
-              value="No"
+              value="no"
               status={checked === "no" ? "checked" : "unchecked"}
-              onPress={() => setChecked("No")}
+              onPress={() => setChecked("no")}
             />
           </View>
         </View>
