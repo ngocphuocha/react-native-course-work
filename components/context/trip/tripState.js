@@ -29,10 +29,14 @@ const TripState = (props) => {
     // set time out 0.5 second for get all trips
     // Reference https://stackoverflow.com/questions/5324798/how-to-search-an-array-in-jquery-like-sql-like-value-statement
     setTimeout(() => {
-      const result = state.tripsData.filter(
-        (item) => item.name.toLowerCase().indexOf(query) > -1
-      );
-      dispatch({ type: UPDATE_TRIP, payload: result });
+      if (query.length === 0) {
+        getTrips();
+      } else {
+        const result = state.tripsData.filter(
+          (item) => item.name.toLowerCase().indexOf(query) > -1
+        );
+        dispatch({ type: UPDATE_TRIP, payload: result });
+      }
     }, 500);
   };
 
