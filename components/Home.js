@@ -1,10 +1,10 @@
 import { Text, View } from "react-native";
 import { GlobalStyles } from "../styles/global";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 
 const Home = () => {
-  useEffect(() => {
+  useFocusEffect(() => {
     initTripsArray();
   }, []);
 

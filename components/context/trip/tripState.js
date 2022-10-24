@@ -49,7 +49,7 @@ const TripState = (props) => {
       }
 
       const newTrips = [...trips, newTrip];
-      // await AsyncStorage.removeItem("trips");
+
       await AsyncStorage.setItem("trips", JSON.stringify(newTrips));
       dispatch({ type: ADD_TRIP, payload: newTrips });
     } catch (error) {
@@ -59,7 +59,7 @@ const TripState = (props) => {
 
   const updateTripItem = async (updateTripItem) => {
     try {
-      const foundItem = state.tripsData.find((e) => e.id == updateTripItem.id);
+      const foundItem = state.tripsData.find((e) => e.id === updateTripItem.id);
       Object.assign(foundItem, updateTripItem);
 
       // set new tripsData to async storage
@@ -73,7 +73,7 @@ const TripState = (props) => {
   const deleteTripItem = async (tripItem) => {
     try {
       // return the trip data array where not include the trip item
-      const result = state.tripsData.filter((e) => e.id != tripItem.id);
+      const result = state.tripsData.filter((e) => e.id !== tripItem.id);
       // set new tripsData to async storage
       await AsyncStorage.setItem("trips", JSON.stringify(result));
       // Update the trips data state context

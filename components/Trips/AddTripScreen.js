@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import "react-native-get-random-values";
 import { v4 as randomId } from "uuid";
 import {
@@ -27,7 +27,6 @@ const AddTripScreen = ({ navigation }) => {
 
   const addNewTrip = async () => {
     try {
-      // retrieve the trip input
       const tripItemInput = {
         id: randomId(),
         name: name.trim().toLowerCase(),
@@ -36,8 +35,6 @@ const AddTripScreen = ({ navigation }) => {
         require: checked.trim().toLowerCase(),
         description: destination.trim().toLowerCase(),
       };
-      // console.log(tripItemInput);
-      // return;
 
       await addTrip(tripItemInput);
       // Navigate back to list all trips screen
@@ -169,7 +166,6 @@ const AddTripScreen = ({ navigation }) => {
   };
 
   const handleRemoveError = (value, key) => {
-    console.log(key);
     setErrorInput((presState) => ({ ...presState, [key]: undefined }));
   };
   return (
