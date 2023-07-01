@@ -34,7 +34,7 @@ export const GlobalStyles = StyleSheet.create({
 });
 
 export const DraculaTheme = {
-  backgroundColor: "#282a36",
+  backgroundColor: "#fff",
   redColor: "#ff5555",
   pinkColor: "#ff79c6",
 };

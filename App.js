@@ -1,7 +1,7 @@
-import Tab from "./components/layouts/Tab.js";
+import FooterTab from "./src/layouts/FooterTab";
 
 const App = () => {
-    return <Tab/>;
-}
+  return <FooterTab />;
+};
 
 export default App;
